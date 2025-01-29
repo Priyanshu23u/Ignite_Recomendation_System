@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #4CAF50;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .genre-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .genres-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .genre-item {
+            position: relative;
+        }
+
+        .genre-checkbox {
+            display: none;
+        }
+
+        .genre-label {
+            display: block;
+            padding: 0.8rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .genre-checkbox:checked + .genre-label {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-recommend {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: #e63946;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .btn-recommend:hover {
+            background: #ff4d5a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+        }
+
+        .recommendations {
+            display: grid;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .recommendations.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .movie-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+
+        .movie-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .movie-info {
+            flex-grow: 1;
+            margin-right: 1rem;
+        }
+
+        .movie-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .rating-badge {
+            background: #4CAF50;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-style: italic;
+        }
+
+        .no-recommendations {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-style: italic;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .btn-recommend:active {
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Movie Recommendations</h1>
+            <p>Search and select your favorite genres to discover amazing movies!</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search genres..." id="genreSearch">
+        </div>
+
+        <section class="genre-section">
+            <div class="genres-grid" id="genresGrid">
+                {% for genre in genres %}
+                <div class="genre-item">
+                    <input type="checkbox" id="{{ genre|lower }}" class="genre-checkbox" value="{{ genre }}">
+                    <label for="{{ genre|lower }}" class="genre-label">{{ genre }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="btn-recommend" onclick="getRecommendations()">Get Recommendations</button>
+        </section>
+
+        <div id="recommendations" class="recommendations"></div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('genreSearch');
+        const genresGrid = document.getElementById('genresGrid');
+        const genreItems = document.querySelectorAll('.genre-item');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            genreItems.forEach(item => {
+                const genreText = item.querySelector('label').textContent.toLowerCase();
+                if (genreText.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        async function getRecommendations() {
+            const checkboxes = document.querySelectorAll('.genre-checkbox:checked');
+            const selectedGenres = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+            if (selectedGenres.length === 0) {
+                showMessage('Please select at least one genre.');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const response = await fetch('/api/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ genres: selectedGenres }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch recommendations');
+                }
+
+                const data = await response.json(); // Changed variable name to 'data'
+                displayRecommendations(data.recommendations); // Access 'recommendations' property
+            } catch (error) {
+                showMessage('An error occurred while getting recommendations. Please try again.');
+                console.error('Error:', error);
+            }
+        }
+        
+        function showLoading() {
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = '<div class="loading">Finding the best movies for you...</div>';
+            recommendationsDiv.classList.add('visible');
+        }
+
+        function showMessage(message) {
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = `<div class="no-recommendations">${message}</div>`;
+            recommendationsDiv.classList.add('visible');
+        }
+
+        function displayRecommendations(recommendations) {
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = '';
+
+            if (!recommendations || recommendations.length === 0) {
+                showMessage('No movies found for selected genres. Try different genres!');
+                return;
+            }
+
+            recommendations.forEach(movie => {
+                const movieElement = document.createElement('div');
+                movieElement.className = 'movie-item';
+                movieElement.innerHTML = `
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-stats">
+                            <span class="rating-badge">⭐ ${movie.rating}</span>
+                            <span class="rating-badge">👥 ${movie.num_ratings} ratings</span>
+                        </div>
+                    </div>
+                `;
+                recommendationsDiv.appendChild(movieElement);
+            });
+
+            recommendationsDiv.classList.remove('visible');
+            void recommendationsDiv.offsetWidth; // Trigger reflow
+            recommendationsDiv.classList.add('visible');
+        }
+    </script>
+</body>
+</html>

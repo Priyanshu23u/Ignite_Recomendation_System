@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffcc00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(230, 57, 70, 0.5);
+        }
+
+        .feature-card h2 {
+            color: #ff4d5a;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #ff4d5a;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 77, 90, 0.3);
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Welcome to Movie Recommendation System</h1>
+            <p>Discover your next favorite movie with our intelligent recommendation engine!</p>
+        </header>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h2>🎯 Personalized Recommendations</h2>
+                <p>Our advanced algorithm analyzes your genre preferences to suggest movies that perfectly match your taste.</p>
+            </div>
+            <div class="feature-card">
+                <h2>🔍 Smart Search</h2>
+                <p>Easily filter through genres and find exactly what you're looking for with our intuitive search system.</p>
+            </div>
+            <div class="feature-card">
+                <h2>⭐ Rating System</h2>
+                <p>Make informed decisions with our comprehensive rating system that includes both scores and number of ratings.</p>
+            </div>
+        </div>
+
+        <a href="/explore" class="cta-button">Start Exploring Movies</a>
+
+        <footer>
+            Created by Priyanshu Upadhyay
+        </footer>
+    </div>
+</body>
+</html>
