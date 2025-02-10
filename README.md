@@ -1,4 +1,4 @@
-# Movie Recommendation System
+# SmartSuggest
 
 This project is a **Movie Recommendation System** built using **Flask** and **Pandas**. It allows users to select movie genres and get personalized movie recommendations based on average ratings.
 
